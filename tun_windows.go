@@ -8,6 +8,7 @@ import (
 	"net"
 	"net/netip"
 	"os"
+	"strings"
 	"sync"
 	"time"
 	"unsafe"
@@ -114,7 +115,7 @@ func (t *NativeTun) configure() error {
 				err = luid.AddRoute(routeRange, netip.IPv6Unspecified(), 0)
 			}
 		}
-		if err != nil {
+		if err != nil && !strings.Contains(err.Error(), "object already exists") {
 			return err
 		}
 		err = windnsapi.FlushResolverCache()
